@@ -1,0 +1,15 @@
+# WippliFlow - Branded Activepieces
+FROM ghcr.io/activepieces/activepieces:0.70.8
+
+# Copy the modified theme file with WippliFlow branding
+COPY packages/server/api/src/app/flags/theme.ts /tmp/theme-source.ts
+
+# Patch the compiled theme.js file at runtime
+RUN if [ -f "/usr/src/app/dist/packages/server/api/src/app/flags/theme.js" ]; then \
+      sed -i "s/#6e41e2/#513091/g" /usr/src/app/dist/packages/server/api/src/app/flags/theme.js && \
+      sed -i "s/Activepieces/WippliFlow/g" /usr/src/app/dist/packages/server/api/src/app/flags/theme.js && \
+      sed -i "s|https://cdn.activepieces.com/brand/full-logo.png|https://wippliragstore.blob.core.windows.net/wippli-documents/wippliflow/logo-light.svg|g" /usr/src/app/dist/packages/server/api/src/app/flags/theme.js && \
+      sed -i "s|https://cdn.activepieces.com/brand/favicon.ico|https://wippliragstore.blob.core.windows.net/wippli-documents/wippliflow/favicon.png|g" /usr/src/app/dist/packages/server/api/src/app/flags/theme.js && \
+      sed -i "s|https://cdn.activepieces.com/brand/logo.svg|https://wippliragstore.blob.core.windows.net/wippli-documents/wippliflow/logo-light.svg|g" /usr/src/app/dist/packages/server/api/src/app/flags/theme.js && \
+      echo "✅ WippliFlow branding applied"; \
+    fi

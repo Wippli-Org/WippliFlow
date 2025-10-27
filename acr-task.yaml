@@ -1,0 +1,12 @@
+version: v1.1.0
+steps:
+  - build: >-
+      --platform linux/amd64
+      --build-arg DOCKER_BUILDKIT=1
+      -f Dockerfile
+      -t {{.Run.Registry}}/wippliflow:{{.Run.ID}}
+      -t {{.Run.Registry}}/wippliflow:latest
+      .
+  - push: 
+      - {{.Run.Registry}}/wippliflow:{{.Run.ID}}
+      - {{.Run.Registry}}/wippliflow:latest

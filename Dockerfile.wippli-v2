@@ -1,0 +1,10 @@
+# WippliFlow - Simple branding override
+FROM ghcr.io/activepieces/activepieces:0.70.8
+
+# The theme is in the bundled server code
+# We'll use environment variables which Activepieces respects for the initial page load
+ENV AP_APP_TITLE="WippliFlow"
+ENV AP_FAVICON_URL="https://wippliragstore.blob.core.windows.net/wippli-documents/wippliflow/favicon.png"
+
+# Note: Full branding inside the app requires building from source with modified theme.ts
+# This approach gives us partial branding (page title and favicon)
