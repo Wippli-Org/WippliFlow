@@ -10,6 +10,9 @@ dev
 /cache
 /logs/
 .env
+.env.deployment
+.env.local
+.env.*.local
 
 # SDK Build
 builds
