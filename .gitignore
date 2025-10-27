@@ -75,3 +75,4 @@ scratch.md
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+AZURE_CREDENTIALS.json

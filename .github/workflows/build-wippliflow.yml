@@ -1,4 +1,4 @@
-name: Build WippliFlow Docker Image
+name: Build and Deploy WippliFlow
 
 on:
   workflow_dispatch:
@@ -7,7 +7,7 @@ on:
       - main
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
@@ -20,7 +20,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and push
+      - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
           context: .
@@ -29,3 +29,18 @@ jobs:
           tags: |
             ghcr.io/wippli-org/wippliflow:latest
             ghcr.io/wippli-org/wippliflow:${{ github.sha }}
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Deploy to Azure Container Apps
+        uses: azure/CLI@v1
+        with:
+          inlineScript: |
+            az containerapp update \
+              --name wippliflow \
+              --resource-group wippliflow-au-rg \
+              --image ghcr.io/wippli-org/wippliflow:${{ github.sha }} \
+              --output table
